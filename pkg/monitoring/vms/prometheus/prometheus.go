@@ -121,6 +121,35 @@ func (metrics *vmiMetrics) updateMemory(mem *stats.DomainStatsMemory) {
 	}
 }
 
+func (metrics *vmiMetrics) updateCPU(cpu *stats.DomainStatsCPU) {
+	if cpu.SystemSet {
+		metrics.pushCommonMetric(
+			"kubevirt_vmi_cpu_system_seconds_total",
+			"system cpu time spent in seconds.",
+			prometheus.CounterValue,
+			float64(cpu.System/1000000000),
+		)
+	}
+
+	if cpu.UserSet {
+		metrics.pushCommonMetric(
+			"kubevirt_vmi_cpu_user_seconds_total",
+			"user cpu time spent in seconds.",
+			prometheus.CounterValue,
+			float64(cpu.User/1000000000),
+		)
+	}
+
+	if cpu.TimeSet {
+		metrics.pushCommonMetric(
+			"kubevirt_vmi_cpu_usage_seconds_total",
+			"total cpu time spent for this domain in seconds.",
+			prometheus.CounterValue,
+			float64(cpu.Time/1000000000),
+		)
+	}
+}
+
 func (metrics *vmiMetrics) updateVcpu(vcpuStats []stats.DomainStatsVcpu) {
 	for vcpuIdx, vcpu := range vcpuStats {
 		stringVcpuIdx := fmt.Sprintf("%d", vcpuIdx)
@@ -473,6 +502,7 @@ func (metrics *vmiMetrics) updateMetrics(vmStats *stats.DomainStats) {
 	metrics.updateKubernetesLabels()
 
 	metrics.updateMemory(vmStats.Memory)
+	metrics.updateCPU(vmStats.Cpu)
 	metrics.updateVcpu(vmStats.Vcpu)
 	metrics.updateBlock(vmStats.Block)
 	metrics.updateNetwork(vmStats.Net)

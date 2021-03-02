@@ -136,3 +136,11 @@ A design proposal and its implementation history can be seen [here](https://docs
  # Other Metrics 
 ## kubevirt_vmi_outdated_count
 #### HELP kubevirt_vmi_outdated_count Indication for the number of VirtualMachineInstance workloads that are not running within the most up-to-date version of the virt-launcher environment.
+
+ # Other Metrics 
+## kubevirt_vmi_cpu_system_seconds_total
+#### HELP kubevirt_vmi_cpu_system_seconds_total system cpu time spent in seconds.
+## kubevirt_vmi_cpu_usage_seconds_total
+#### HELP kubevirt_vmi_cpu_usage_seconds_total total cpu time spent for this domain in seconds.
+## kubevirt_vmi_cpu_user_seconds_total
+#### HELP kubevirt_vmi_cpu_user_seconds_total user cpu time spent in seconds.
